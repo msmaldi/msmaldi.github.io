@@ -2,8 +2,77 @@
 <html>
 <head>
 	<title>Msmaldi - Home</title>
+	<style type="text/css" media="screen">
+
+	body {
+		margin: 0;
+		background-color: #f1f1f1;
+	}
+
+	.header {
+		font-family: Verdana, sans-serif;
+		padding: 5px;
+		overflow: hidden;
+		background-color: #333;
+	}
+
+	.container {
+
+		margin-left: auto;
+		margin-right: auto;
+	}
+	@media (min-width: 768px) {
+		.container {
+			width: 750px;
+		}
+	}
+	@media (min-width: 992px) {
+		.container {
+			width: 970px;
+		}
+	}
+	@media (min-width: 1200px) {
+		.container {
+			width: 1170px;
+		}
+	}
+
+	.header ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.header li {
+		float: left;
+	}
+
+	.header li a {
+		display: block;
+		color: white;
+		text-align: center;
+		padding: 14px 16px;
+		text-decoration: none;
+	}
+
+	.header li a:hover {
+		background-color: #111;
+	}
+
+	a { color: #4183c4; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+	</style>
 </head>
 	<body>
-		Msmaldi - Desenvolvedor
+		<div class="header">
+			<div class="container">
+				<ul>
+					<li><a class="active" href="#home">Home</a></li>
+					<li><a href="#news">News</a></li>
+					<li><a href="#contact">Contact</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+			</div>
+		</div>
 	</body>
 </html>
