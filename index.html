@@ -3,76 +3,106 @@
 <head>
 	<title>Msmaldi - Home</title>
 	<style type="text/css" media="screen">
-
-	body {
-		margin: 0;
-		background-color: #f1f1f1;
-	}
-
-	.header {
-		font-family: Verdana, sans-serif;
-		padding: 5px;
-		overflow: hidden;
-		background-color: #333;
-	}
-
-	.container {
-
-		margin-left: auto;
-		margin-right: auto;
-	}
-	@media (min-width: 768px) {
-		.container {
-			width: 750px;
+		body {
+			margin: 0;
+			font-size: 1.1em;
+			color: #222;
+			background-color: #f7f7f7;
+			font: 19px/1.6 "Open Sans",Ubuntu,"Nimbus Sans L",Avenir,AvenirNext,"Segoe UI",Helvetica,Arial,sans-serif;
 		}
-	}
-	@media (min-width: 992px) {
-		.container {
-			width: 970px;
+		header {
+			display: block;
+			text-align: right;
 		}
-	}
-	@media (min-width: 1200px) {
-		.container {
-			width: 1170px;
+		.header {
+			padding: .8em 1.5em 1em 1.5em;
 		}
-	}
+		main {
+			margin: 15px auto;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			display: block;			
+			background-color: white;
+		}
 
-	.header ul {
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-	}
+		.container {
+			max-width: 750px;
+			margin: 0 auto;
+			padding: 0 1.5em;
+		}
 
-	.header li {
-		float: left;
-	}
+		.name {
+			margin: 5px;
+			font-size: 2em;
+		}
 
-	.header li a {
-		display: block;
-		color: white;
-		text-align: center;
-		padding: 14px 16px;
-		text-decoration: none;
-	}
+		.title {
+			font-weight: lighter;
+			font-size: 2em;
+		}
 
-	.header li a:hover {
-		background-color: #111;
-	}
-
-	a { color: #4183c4; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+		a {
+			color: #222;
+			text-decoration: none;
+		}
+		a:hover {
+			color: #222;
+			text-decoration: underline;
+		}		
 	</style>
 </head>
 	<body>
-		<div class="header">
+		<header class="header">
 			<div class="container">
-				<ul>
-					<li><a class="active" href="#home">Home</a></li>
-					<li><a href="#news">News</a></li>
-					<li><a href="#contact">Contact</a></li>
-					<li><a href="#about">About</a></li>
-				</ul>
+				<p class="name"><a>Msmaldi Blog</a></p>by <span class="althor">msmaldi</span>
 			</div>
-		</div>
+		</header>
+		<main>
+			<div class="container">
+				<h1 class="title">Hello World</h1>
+				<time>Publicado em 27/07/2018</time>
+				<p>Um exemplo de Hello World em C#</p>
+				<pre class="brush: csharp">
+using System;
+
+namespace HelloWorld
+{
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			Console.WriteLine("Hello World!");
+		}
+	}
+}</pre>
+				<p>Então é isso</p>
+			</div>
+		</main>
+		<footer>
+			
+		</footer>
 	</body>
+	<noscript id="deferred-styles">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCore.min.css" rel="stylesheet" type="text/css">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shThemeDefault.min.css" rel="stylesheet" type="text/css">
+	</noscript>
+	<script>
+		var loadDeferredStyles = function() {
+			var addStylesNode = document.getElementById("deferred-styles");
+			var replacement = document.createElement("div");
+			replacement.innerHTML = addStylesNode.textContent;
+			document.body.appendChild(replacement)
+			addStylesNode.parentElement.removeChild(addStylesNode);
+		};
+		var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+			window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+		if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+		else window.addEventListener('load', loadDeferredStyles);
+	</script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js' type='text/javascript'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushCSharp.min.js' type='text/javascript'></script>
+	<script type="text/javascript">
+		SyntaxHighlighter.defaults.toolbar = false;
+		SyntaxHighlighter.all()
+   </script>
 </html>
