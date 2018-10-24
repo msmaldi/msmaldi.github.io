@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Msmaldi - Home</title>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCore.min.css" rel="stylesheet" type="text/css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shThemeDefault.min.css" rel="stylesheet" type="text/css">
+	<link href="../site.css" rel="stylesheet" type="text/css">
+</head>
+	<body>
+		<header class="header">
+			<div class="container">
+				<p class="name"><a>Msmaldi Dev</a></p><span class="althor">msmaldi</span>
+			</div>
+		</header>
+		<main>
+			<div class="container">
+				<h1 class="title">SqlServer com AspNetCore no Linux</h1>
+				<time>Publicado em 22/10/2018</time>
+				<p>Siga os procedimentos</p>
+				<pre class='brush: bash'>dotnet new mvc --auth Individual</pre>
+				<p>Projeto Criado, como não usaremos o Sqlite delete o app.db e as migrations</p>				
+				<pre class='brush: bash'>rm -r app.db Data/Migrations/</pre>				
+				<p>Agora precisamos mudar no arquivo Startup.cs</p>
+				<p>Localize 'UseSqlite' e substitua por 'UseSqlServer', ou simplesmente execute</p> 				
+				<pre class='brush: bash'>sed -i 's,UseSqlite,UseSqlServer,g' Startup.cs</pre>
+				<p>Agora precisaremos criar o usuario e o banco da dados no SqlServer, para isso, connecte no localhost com SA</p>
+				<pre class='brush: bash'>/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -p</pre>
+				<p>Cria o banco de dados</p>
+				<pre class='brush: sql'>CREATE DATABASE NomeDoSeuBanco;
+GO</pre>
+				<p>Cria o login e o usuario</p>
+				<pre class='brush: sql'>CREATE LOGIN msmaldi WITH PASSWORD = 'seupassword1234';
+GO</pre>
+				<p>Crie o usuario e de a permissão db_owner para ele</p>
+				<pre class='brush: sql'>USE NomeDoSeuBanco;
+GO
+CREATE USER msmaldi FOR LOGIN msmaldi;
+EXEC sp_addrolemember 'db_owner', 'msmaldi';
+GO</pre>
+				<p>No arquivo appsetting.json, apague o objeto ConnectionStrings, devendo ficar assim</p>
+				<pre class='brush: js'>{
+	"Logging": {
+		"LogLevel": {
+		"Default": "Warning"
+		}
+	},
+	"AllowedHosts": "*"
+}</pre>
+				<p>Substitua o contrutor da classe Startup.cs</p>
+				<pre class='brush: js'>public Startup(IHostingEnvironment env)
+{
+	var builder = new ConfigurationBuilder();
+	if (env.IsDevelopment())
+		builder.AddUserSecrets&#60Startup&#62();
+	builder.AddEnvironmentVariables();
+	Configuration = builder.Build();
+}</pre>
+				<p>Adicione a ferramenta global user-secrets</p>
+				<pre class='brush: bash'>dotnet tool install --global dotnet-user-secrets</pre>
+				<p>Adicione a connection string</p>
+				<pre class='brush: bash'>dotnet user-secrets set ConnectionStrings:DefaultConnection 'Server=localhost;Database=NomeDoSeuBanco; User Id=msmaldi;Password=seupassword1234;</pre>
+				<p>Crie a migration que apagamos agora pouco</p>
+				<pre class='brush: bash'>dotnet ef migrations add CreateIdentitySchema
+dotnet ef database update</pre>
+				<p>E finalmente podemos iniciar a aplicação</p>
+				<pre class='brush: bash'>dotnet run</pre>
+				<p>Seu ambiente de desenvolvimento está pronto.</p>
+				<p>Você não deve colocar a connection string com user-secrets ou em um arquivo, para isso devemos usar as variaveis de ambiente, no linux use para registrar na variavel de ambiente</p>
+				<pre class='brush: bash'>export SQLCONNSTR_DefaultConnection='a connection string'</pre>
+			</div>
+		</main>
+		<footer>
+			
+		</footer>
+	</body>
+	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js' type='text/javascript'></script>
+	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushBash.min.js' type='text/javascript'></script>
+	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushJScript.min.js' type='text/javascript'></script>
+	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushCSharp.min.js' type='text/javascript'></script>
+	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushSql.min.js' type='text/javascript'></script>
+	<script defer src='../site.js' type="text/javascript"></script>
+</html>
