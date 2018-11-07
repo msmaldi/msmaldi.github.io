@@ -11,6 +11,9 @@ header {
 .header {
     padding: .8em 1.5em 1em 1.5em;
 }
+footer {
+    padding: .8em 1.5em 1em 1.5em;
+}
 main {
     margin: 15px auto;
     padding-top: 10px;
@@ -42,6 +45,9 @@ a {
 a:hover {
     color: #222;
     text-decoration: underline;
+}
+.text-center {
+    text-align: center;
 }
 
 .syntaxhighlighter { 
