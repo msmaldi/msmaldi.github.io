@@ -118,7 +118,7 @@ GO</pre>
 				<p>Adicione a ferramenta global user-secrets</p>
 				<pre class='brush: bash'>dotnet tool install --global dotnet-user-secrets</pre>
 				<p>Adicione a connection string</p>
-				<pre class='brush: bash'>dotnet user-secrets set ConnectionStrings:DefaultConnection 'Server=localhost;Database=AnotherShopDB; User Id=another;Password=P@ssw0rd;'</pre>
+				<pre class='brush: bash'>dotnet user-secrets set ConnectionStrings:DefaultConnection 'Server=localhost;Database=AnotherShopDB;User=another;Password=P@ssw0rd;'</pre>
 				<p>Crie a migration que apagamos agora pouco</p>
 				<pre class='brush: bash'>dotnet ef migrations add CreateIdentitySchema -o ./Data/Migrations/
 dotnet ef database update</pre>
