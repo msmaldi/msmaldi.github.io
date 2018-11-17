@@ -127,9 +127,9 @@ dotnet ef database update</pre>
 				<p>Seu ambiente de desenvolvimento está pronto.</p>
 				<h4>Em Produção</h4>
 				<p>Em ambiende de Produção, você não deve colocar a connection string com user-secrets ou em um arquivo, para isso devemos usar as variaveis de ambiente, no linux use para registrar na variavel de ambiente</p>
-				<pre class='brush: bash'>export SQLCONNSTR_DefaultConnection='Server=localhost;Database=AnotherShopDB; User Id=another;Password=P@ssw0rd;'</pre>
+				<pre class='brush: bash'>export SQLCONNSTR_DefaultConnection='Server=localhost;Database=AnotherShopDB;User=another;Password=P@ssw0rd;'</pre>
 				<p>Ou então</p>
-				<pre class='brush: bash'>export ConnectionStrings__DefaultConnection='Server=localhost;Database=AnotherShopDB; User Id=another;Password=P@ssw0rd;'</pre>
+				<pre class='brush: bash'>export ConnectionStrings__DefaultConnection='Server=localhost;Database=AnotherShopDB;UserId=another;Password=P@ssw0rd;'</pre>
 				<p>Note que usamos 2 _ (underline) para a substituição do : (dois pontos), visto que no linux não é possivel colocar : como parte do nome da variavel de ambiente.</p>
 				<h4>Referencias</h4>
 				<a href="https://stackoverflow.com/questions/44931613/how-to-correctly-store-connection-strings-in-environment-variables-for-retrieval">How to correctly store connection strings</a>
