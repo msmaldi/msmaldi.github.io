@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Msmaldi - Home</title>
+    <style>
+        body {
+            margin: 0;
+            color: #222;
+            background-color: #f7f7f7;
+            font: 19px/1.6 "Open Sans", Ubuntu, "Nimbus Sans L", Avenir, AvenirNext, "Segoe UI", Helvetica, Arial, sans-serif;
+        }
+
+        header {
+            display: block;
+            text-align: right;
+        }
+
+        .header {
+            padding: .8em 1.5em 1em 1.5em;
+        }
+
+        footer {
+            padding: .8em 1.5em 1em 1.5em;
+        }
+
+        main {
+            margin: 15px auto;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            display: block;
+            background-color: white;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 0 1.5em;
+        }
+
+        .name {
+            margin: 5px;
+            font-size: 2em;
+        }
+
+        .title {
+            font-weight: lighter;
+            font-size: 2em;
+        }
+
+        a {
+            color: #222;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #222;
+            text-decoration: underline;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .syntaxhighlighter {
+            overflow-y: hidden !important;
+            overflow-x: auto !important;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <p class="name"><a>Msmaldi Dev</a></p><span class="althor">msmaldi</span>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h1 class="title">Paginas de StatusCode no AspNet</h1>
+            <time>Publicado em 28/11/2018</time>
+            <p>Neste post, mostrarei como retornar paginas 404 (NotFound) e 500 (InternalServerError) no AspNet.</p>
+            <p>Então vamos criar um Projeto novo:</p>
+            <pre class="brush: bash">dotnet new razor -o SoftShop</pre>
+            <p>Mude a Environment para Production no arquivo Properties/launchSettings.json como abaixo, visto que esses direcionamentos deve ser feitos somente em produção, e é neles que testaremos:</p>
+            <pre class="brush: js">{
+    ...
+    "SoftShop": {
+        "commandName": "Project",
+        "launchBrowser": true,
+        "applicationUrl": "https://localhost:5001;http://localhost:5000",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Production"
+        }
+    }
+}
+            </pre>
+            <p>Inicie o aplicativo, vejá que se tentar acessar uma URL que não existe, ele retorna uma pagina com o StatusCode 404 mas com o Body vazio.</p>
+            <p>Então altere o arquivo Error.cshtml.cs para:</p>
+            <pre class="brush: csharp">[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+public class ErrorModel : PageModel
+{
+    public int StatusCodeId { get; private set; }
+    public HttpStatusCode HttpStatusCode { get; private set; }
+    public string Message { get; private set; }
+
+    public void OnGet()
+    {
+        PrepareStatusCode();
+    }
+
+    public void PrepareStatusCode()
+    {
+        if (Response.StatusCode == (int)HttpStatusCode.OK)
+        {
+            Response.StatusCode = 404;
+        }
+
+        StatusCodeId = Response.StatusCode;
+        HttpStatusCode = (HttpStatusCode)StatusCodeId;
+        Message = Messages[HttpStatusCode];
+    }
+
+    static Dictionary&#60HttpStatusCode, string&#62 Messages =
+        new Dictionary&#60HttpStatusCode, string&#62()
+        {
+            { HttpStatusCode.NotFound, "O recurso solicitado não existe no servidor." },
+            { HttpStatusCode.InternalServerError, "Ocorreu um erro interno em nosso servidor." }
+        };
+}
+            </pre>
+            <p>E o arquivo Error.cshtml para:</p>
+            <pre class="brush: csharp">@page
+@model ErrorModel
+@{ ViewData["Title"] = Model.HttpStatusCode; }
+<style>
+    .sorry {
+        font-size: 72px;
+        font-family: 'Courier New', Courier, monospace;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+</style>
+<div class="text-center">
+    <h2 class="text-danger">
+        @Model.StatusCodeId @Model.HttpStatusCode
+    </h2>
+    <p>
+        @Model.Message
+    </p>
+    <p>
+        E é tudo que sabemos.
+    </p>
+    <p class="sorry">=[</p>
+</div>
+            </pre>
+            <p>E no Startup.cs altere o metodo configure o metodo UseStatusCodePagesWithReExecute</p>
+            <pre class="brush: csharp">public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+{
+    if (env.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+    }
+    else
+    {
+        app.UseExceptionHandler("/Error");
+        app.UseStatusCodePagesWithReExecute("/Error");
+        app.UseHsts();
+    }
+
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
+    app.UseCookiePolicy();
+
+    app.UseMvc();
+}</pre>
+            <p>Assim já podemos ver as paginas de StatusCode 404 e 500 personalizadas.</p>
+            <p>Vejá com o wget os Status Code de resposta</p>
+            <pre class="brush: bash">wget -S --spider -q --no-check-certificate https://localhost:5001
+            </pre>
+            <pre>  HTTP/1.1 200 OK
+  Date: Fri, 30 Nov 2018 10:47:13 GMT
+  Content-Type: text/html; charset=utf-8
+  Server: Kestrel</pre>
+            <pre class="brush: bash">wget -S --spider -q --no-check-certificate https://localhost:5001/NotFound
+            </pre>
+            <pre>  HTTP/1.1 404 Not Found
+  Date: Fri, 30 Nov 2018 10:59:39 GMT
+  Content-Type: text/html; charset=utf-8
+  Server: Kestrel
+  Cache-Control: no-store,no-cache
+  Pragma: no-cache</pre>
+            <p>O que acontece se tentar acessar a rota /Error</p>
+            <pre class="brush: bash">wget -S --spider -q --no-check-certificate https://localhost:5001/Error</pre>
+            <pre>  HTTP/1.1 404 Not Found
+  Date: Fri, 30 Nov 2018 11:01:13 GMT
+  Content-Type: text/html; charset=utf-8
+  Server: Kestrel
+  Cache-Control: no-store,no-cache
+  Pragma: no-cache</pre>
+            <p>Note que retorna uma pagina 404, isso porque efetuamos o tratamento para que o cliente não saiba que a pagina /Error exista.</p>
+            <h4>Referencias</h4>
+            <a href="https://andrewlock.net/re-execute-the-middleware-pipeline-with-the-statuscodepages-middleware-to-create-custom-error-pages/">Re-execute the middleware pipeline with the StatusCodePages Middleware to create custom error pages</a>
+        </div>
+    </main>
+    <footer class="text-center">
+        <a href="https://github.com/msmaldi">
+            <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
+                <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+            </svg>
+        </a>
+    </footer>
+</body>
+<noscript id="deferred-styles">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCore.min.css" rel="stylesheet"
+        type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shThemeDefault.min.css" rel="stylesheet"
+        type="text/css">
+    <link href='../site.css' rel="stylesheet" type="text/css">
+</noscript>
+<script>
+    var loadDeferredStyles = function () {
+        var addStylesNode = document.getElementById("deferred-styles");
+        var replacement = document.createElement("div");
+        replacement.innerHTML = addStylesNode.textContent;
+        document.body.appendChild(replacement)
+        addStylesNode.parentElement.removeChild(addStylesNode);
+    };
+    var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 0); });
+    else window.addEventListener('load', loadDeferredStyles);
+</script>
+<script defer src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js' type='text/javascript'></script>
+<script defer src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushBash.min.js' type='text/javascript'></script>
+<script defer src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushJScript.min.js' type='text/javascript'></script>
+<script defer src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushCSharp.min.js' type='text/javascript'></script>
+<script defer src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushSql.min.js' type='text/javascript'></script>
+<script defer src='../site.js' type="text/javascript"></script>
+
+</html>
