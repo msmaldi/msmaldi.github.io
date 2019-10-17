@@ -8,6 +8,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCore.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shThemeDefault.min.css" rel="stylesheet" type="text/css">
     <link href='../site.css' rel="stylesheet" type="text/css">
+    <style>
+        table.table td {
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -19,7 +25,7 @@
         <div class="container">
             <h1 class="title">Int, Long, Guid.<br>Qual usar no banco de dados?</h1>
             <p>Um resumo sobre o tamanho:</p>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Type</th>
@@ -30,26 +36,29 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>int | Int32</td>
-                        <td>32 bits | 4 bytes</td>
+                        <td class="table">int | Int32</td>
+                        <td>32 bits<br />(4 bytes)</td> 
                         <td>-2.147.483.648</td>
                         <td>2.147.483.647</td>
                     </tr>
                     <tr>
                         <td>long | Int64</td>
-                        <td>64 bits | 8 bytes</td>
+                        <td>64 bits<br />(8 bytes)</td>
                         <td>-9.223.372.036.854.775.808</td>
                         <td>9.223.372.036.854.775.807</td>
                     </tr>
                     <tr>
                         <td>System.Guid</td>
-                        <td>128 bits | 16 bytes</td>
-                        <td>00000000-0000-0000-0000-000000000000</td>
-                        <td>FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF</td>
+                        <td>128 bits<br />(16 bytes)</td>
+                        <td>00000000-0000-0000<br />-0000-000000000000</td>
+                        <td>FFFFFFFF-FFFF-FFFF<br />-FFFF-FFFFFFFFFFFF</td>
                     </tr>
                 </tbody>
             </table>
-            <p>Por que prefiro usar long?</p>
+            <p>Olhando esses dados, quanto tempo demoraria para usar todos os indices?</p>
+            <p>Primeiros veremos com um Inteiro de 32 bits.</p>
+            <p>Imagine que inserimos 100 por segundos, então temos 22 milhões de segundos, ou 366.667 minutos, ou 6112 horas, ou 260 dias.</p>
+            <p>Agora com Inteiro de 64 bits.</p>
             <p>Imagine que vc desenvolveu um aplicativo que vai rodar por 1000 anos, quantas inserções por segundo ele suportaria?</p>
             <p>Considere então 1000 anos * 365 dias * 24 horas * 60 minutos * 60 segundos temos = 31.536.000.000, 31,5 bilhões.</p>
             <p>Logo 9.223.372.036.854.775.807 / 31.536.000.000 = 292.471.208,67 inserções por segundos.</p>
