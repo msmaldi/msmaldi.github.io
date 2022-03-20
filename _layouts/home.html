@@ -1,0 +1,49 @@
+---
+layout: default
+---
+<div>
+    {{ content }}
+    {% if site.paginate %}
+    {% assign posts = paginator.posts %}
+    {% else %}
+    {% assign posts = site.posts %}
+    {% endif %}
+
+    {%- if posts.size > 0 -%}
+    <ul class="post-list">
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        {%- for post in posts -%}
+        <li>
+            <span class="post-meta">{{ post.date | date: date_format }}</span>
+            {% for category in post.categories %}
+            <span class="post-meta">{{ category }}</span>
+            {% endfor %}
+            <h4>
+                <a class="post-link" href="{{ post.url | relative_url }}">
+                    {{ post.title | escape }}
+                </a>
+            </h4>
+            <span class="post-sumary">
+                {{ post.sumary }}
+            </span>
+            {%- if site.show_excerpts -%}
+            {{ post.excerpt }}
+            {%- endif -%}
+        </li>
+        {%- endfor -%}
+    </ul>
+
+    {% if site.paginate %}
+    <div class="pager">
+        <ul class="pagination">
+            {%- if paginator.previous_page %}
+            <li><a href="{{ paginator.previous_page_path | relative_url }}" class="previous-page">Previous</a></li>
+            {%- endif %}
+            {%- if paginator.next_page %}
+            <li><a href="{{ paginator.next_page_path | relative_url }}" class="next-page">Next</a></li>
+            {%- endif %}
+        </ul>
+    </div>
+    {%- endif %}
+    {%- endif -%}
+</div>

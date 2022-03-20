@@ -1,0 +1,13 @@
+domain: "msmaldi.github.io/"
+url: "https://msmaldi.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "" # the subpath of your site, e.g. /blog
+title: "msmaldi" # the name of your site, e.g. ACME Corp.
+email: "msmaldi@hotmail.com"
+paginate: 10
+
+description: >-
+
+permalink: /:year/:month/:day/:title
+
+github: https://github.com/msmaldi
+
