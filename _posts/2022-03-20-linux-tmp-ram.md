@@ -2,7 +2,7 @@
 layout: post
 title:  "Movendo o /tmp para a Memoria Ram"
 date:   20/03/2022 18:00:00 -0300
-categories: linux ram tmp
+tags:   linux ram tmp
 sumary: >-
   Usando Memoria Ram para arquivos temporários
 ---
