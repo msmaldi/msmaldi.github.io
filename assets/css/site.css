@@ -135,7 +135,7 @@ table td { border: 1px solid #e8e8e8; }
 
 .post-title { font-size: 36px; letter-spacing: -1px; line-height: 1; }
 
-.post-sumary { line-height: 1; }
+.post-excerpt { margin-bottom: 30px;  }
 
 @media screen and (max-width: 800px) { .post-title { font-size: 36px; } }
 

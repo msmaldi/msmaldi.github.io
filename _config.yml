@@ -4,6 +4,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 title: "msmaldi" # the name of your site, e.g. ACME Corp.
 email: "msmaldi@hotmail.com"
 paginate: 10
+show_excerpts: true
 
 description: >-
 
