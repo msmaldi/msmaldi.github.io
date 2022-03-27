@@ -2,10 +2,11 @@
 layout: post
 title:  "Movendo o /tmp para a Memoria Ram"
 date:   20/03/2022 18:00:00 -0300
+mdate:   27/03/2022 18:00:00 -0300
 tags:   linux ram tmp
-sumary: >-
-  Usando Memoria Ram para arquivos temporários
 ---
+
+### Usando Memoria Ram para arquivos temporários
 
 Para computadores com bastante memoria ram, e com SSD, é recomendado montar o /tmp na ram, para isso edite o arquivo /etc/fstab:
 
