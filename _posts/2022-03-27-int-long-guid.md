@@ -2,6 +2,7 @@
 layout: post
 title:  "Int, Long, Guid."
 date:   27/03/2022 18:00:00 -0300
+mdate:  27/03/2022 18:00:00 -0300
 tags: programming dotnet c#
 ---
 
