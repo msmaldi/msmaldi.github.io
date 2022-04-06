@@ -12,3 +12,5 @@ permalink: /:year/:month/:day/:title
 
 github: https://github.com/msmaldi
 
+plugins:
+  - jekyll-feed
