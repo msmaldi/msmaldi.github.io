@@ -122,6 +122,7 @@ namespace Website.Test.Application
         static void ConfigureWebHost(IWebHostBuilder webHost)
         {
             webHost.UseEnvironment("Testing")
+                    .UseContentRoot("../../../../../src/Website/")
                     .UseStartup<Website.Startup>()
                     .UseUrls($"{appHost}:{appPort}")
                     .UseKestrel();
