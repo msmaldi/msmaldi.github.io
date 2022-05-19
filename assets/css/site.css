@@ -64,6 +64,8 @@ pre > code { border: 0; padding-right: 0; padding-left: 0; }
 
 .social-media-list li + li { padding-top: 5px; }
 
+.social-link { line-height: 36px; padding: 16px; }
+
 /** Tables */
 table { margin-bottom: 30px; width: 100%; text-align: left; color: #3f3f3f; border-collapse: collapse; border: 1px solid #e8e8e8; }
 
